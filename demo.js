@@ -1,25 +1,25 @@
 $(function () {
     var viewModel = {
         testVal1 : ko.observable(5),
-        testVal2 : ko.observable(12.4)
+        testVal2 : ko.observable(-12.4)
     };
     ko.applyBindings(viewModel);
 
-    $("#testDiv").sevenSeg();
+    $("#example1").sevenSeg();
 
     var iValue = 0;
     setInterval(function() {
-        $("#testDiv").sevenSeg({value: iValue});
+        $("#example1").sevenSeg({value: iValue});
         if(++iValue > 9) {
 			iValue = 0;
 		}
     }, 200);
 
-    $("#testResizableDiv").resizable();
+    $("#testResizableDiv").resizable({aspectRatio: true});
     $("#testSegInsideResizable").sevenSeg({value: 8});
 
     $("#testArray").sevenSegArray({digits:3});    
-    $("#testResizableDiv2").resizable();
+    $("#testResizableDiv2").resizable({aspectRatio: true});
     var iArrayValue = 0;
     setInterval(function() {
         $("#testArray").sevenSegArray({value: iArrayValue});
