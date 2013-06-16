@@ -77,9 +77,8 @@ _create: function () {
     }
 },
 
-destroy: function() {
+_destroy: function() {
     this.jqSvgElement.remove();
-	$.Widget.prototype.destroy.call( this ); // TODO : Try this._superApply();  Also override _destoy method instead, I think that is what you are supposed to do. http://api.jqueryui.com/jQuery.widget/#method-_superApply
 },
 
 _setOption: function(key, value){
@@ -162,12 +161,11 @@ _create: function () {
     }
 },
 
-destroy: function() {
+_destroy: function() {
     $.each(this.aJqDigits, function(index, jqDigit) {
         jqDigit.sevenSeg("destroy");
         jqDigit.remove();
     });
-	$.Widget.prototype.destroy.call( this ); // TODO : Try this._superApply();  Also override _destoy method instead, I think that is what you are supposed to do. http://api.jqueryui.com/jQuery.widget/#method-_superApply
 },
 
 _setOption: function(key, value){
