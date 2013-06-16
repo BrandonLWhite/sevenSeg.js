@@ -5,8 +5,8 @@ var numberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http
 // Default CSS styles. If you don't specify your own CSS or discrete color options, this is what gets used.
 // 
 $("<style type='text/css'>" 
-    + ".bw-sevenSeg-svg {fill: #320000; overflow: hidden; stroke-width: 0; height: 100%; width: 100%; background-color: Black}"
-    + ".bw-sevenSeg-segOn {fill: Red}"
+    + ".sevenSeg-svg {fill: #320000; overflow: hidden; stroke-width: 0; height: 100%; width: 100%; background-color: Black}"
+    + ".sevenSeg-segOn {fill: Red}"
     + "</style>")
     .prependTo("head");
 
@@ -32,7 +32,7 @@ Widget factory creation handler.
 */
 _create: function () {
     this.jqSvgElement = $("<svg/>", {
-        class: this.widgetBaseClass + "-svg",
+        class: this.widgetName + "-svg",
         viewBox: "0 0 57 80",
         version: "1.1", 
         xmlns: "http://www.w3.org/2000/svg", 
@@ -45,7 +45,7 @@ _create: function () {
         .append($("<polyline/>", {id: "v-seg", points:"0 11, 5 6, 10 11, 10 34, 5 39, 0 39"}))
         .appendTo(this.jqSvgElement);
     
-    this.jqSegments = $("<g/>", {class: this.widgetBaseClass + "-segGroup"})
+    this.jqSegments = $("<g/>", {class: this.widgetName + "-segGroup"})
         .append($("<use/>", {"xlink:href": "#h-seg", x: "0", y: "0"}))                                  //Segment A
         .append($("<use/>", {"xlink:href": "#v-seg", x: "-48", y: "0", transform: "scale(-1,1)"}))      //Segment B
         .append($("<use/>", {"xlink:href": "#v-seg", x: "-48", y: "-80", transform: "scale(-1,-1)"}))   //Segment C
@@ -70,7 +70,7 @@ _create: function () {
     //
     this.element.html(this.element.html());
     this.jqSvgElement = this.element.find("svg");
-    this.jqSegments = this.jqSvgElement.find("." + this.widgetBaseClass + "-segGroup");
+    this.jqSegments = this.jqSvgElement.find("." + this.widgetName + "-segGroup");
 
     if(this.options.value) {
         this.displayValue(this.options.value);
@@ -115,7 +115,7 @@ _getSegments: function(value) {
 _setSvgElementFill: function(jqElement, bOn) {
     // jQuery addClass/removeClass doesn't work with svg <use> elements. So we have to do it the old way.
     //
-    jqElement.attr("class", bOn && (this.widgetBaseClass + "-segOn"));
+    jqElement.attr("class", bOn && (this.widgetName + "-segOn"));
     
     // Set the fill style if options.colorOn is defined. This overrides CSS definitions.
     //
