@@ -12,18 +12,18 @@
     <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
     
     <script src="sevenSeg.js"></script>
+    <script src="demo.js"></script>
 </head>
 <body>
 
-<div id="testDiv" style="padding: 1em; height: 100px; width: 100px;">
-</div>
+<div id="testDiv" style="padding: 1em; height: 100px; width: 100px;"></div>
 
 <div data-bind="sevenSeg: {value: testVal1}" style="padding: 1em; height: 50px; width: 40px;"></div>
 <input data-bind="value: testVal1" style="width: 2em;" />
 
 <div>
-<div data-bind="sevenSegArray: {digits: 5, value: testVal2}" style="padding: 1em; height: 50px; width: 200px;"></div>
-<input data-bind="value: testVal2" style="width: 5em;" />
+	<div data-bind="sevenSegArray: {digits: 5, value: testVal2}" style="padding: 1em; height: 50px; width: 200px;"></div>
+	<input data-bind="value: testVal2" style="width: 5em;" />
 </div>
 
 
@@ -35,11 +35,9 @@
     <div id="testArray"></div>
 </div>
 
-<div id="testArray1" style="padding: 1em; height: 80px; width:400px">
-</div>
+<div id="testArray1" style="padding: 1em; height: 80px; width:400px"></div>
 
-<div id="testArray2" style="padding: 1em; height: 60px;">
-</div>
+<div id="testArray2" style="padding: 1em; height: 60px;"></div>
 <button id="btnCreate">Create</button>
 <button id="btnDestroy">Destroy</button>
 
