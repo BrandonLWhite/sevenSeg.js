@@ -56,7 +56,7 @@ _create: function () {
         .appendTo(this.jqSvgElement);
 
     if(this.options.slant) {
-        this.jqSegments.attr("transform", "skewX(" + -this.options.slant + ")")
+        this.jqSegments.attr("transform", "skewX(" + -this.options.slant + ")");
     }
 
     if(this.options.decimalPoint) {
@@ -83,7 +83,7 @@ _destroy: function() {
 
 _setOption: function(key, value){
 	this.options[key] = value;
-        			
+
 	switch(key){
 		case "value":
 			this.displayValue(value);
@@ -97,7 +97,7 @@ Call with null to blank out the display.
 displayValue: function(value, bDecimalPoint) {
     var self = this;
     if(value >= numberSegments.length) return;
-    self.options["value"] = value;
+    self.options.value = value;
     var segments = self._getSegments(value);
     self.jqSegments.children().each(function(index, element) {                     
         self._setSvgElementFill($(element), segments & (1 << index));        
@@ -123,14 +123,18 @@ _setSvgElementFill: function(jqElement, bOn) {
 
 });
 
-ko.bindingHandlers.sevenSeg = {
-    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-        $(element).sevenSeg(ko.toJS(valueAccessor()));
-    },
-    update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-        $(element).sevenSeg("option", ko.toJS(valueAccessor()));
-    }
-};
+// Plugin Knockout binding handler for sevenSeg if KO is defined.
+//
+if(ko && ko.bindingHandlers) {
+	ko.bindingHandlers.sevenSeg = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+			$(element).sevenSeg(ko.toJS(valueAccessor()));
+		},
+		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+			$(element).sevenSeg("option", ko.toJS(valueAccessor()));
+		}
+	};
+}
 
 /**
 TODO BW DOCME
@@ -170,7 +174,7 @@ _destroy: function() {
 
 _setOption: function(key, value){
 	this.options[key] = value;
-        			
+ 
 	switch(key){
 		case "value":
 			this.displayValue(value);
@@ -189,7 +193,7 @@ displayValue: function(value) {
     var iDecimalIdx = sValue.indexOf('.');
     var iDigitIdx = sValue.length - 1;
     $.each(self.aJqDigits, function(index, jqDigit) {
-        var bDecimal = iDecimalIdx >= 0 && iDigitIdx == iDecimalIdx;
+        var bDecimal = iDecimalIdx >= 0 && iDigitIdx === iDecimalIdx;
         if(bDecimal) {
             --iDigitIdx;
         }
@@ -203,14 +207,18 @@ displayValue: function(value) {
 
 });
 
-ko.bindingHandlers.sevenSegArray = {
-    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-        $(element).sevenSegArray(ko.toJS(valueAccessor()));
-    },
-    update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-        $(element).sevenSegArray("option", ko.toJS(valueAccessor()));
-    }
-};
+// Plugin Knockout binding handler for sevenSegArray if KO is defined.
+//
+if(ko && ko.bindingHandlers) {
+	ko.bindingHandlers.sevenSegArray = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+			$(element).sevenSegArray(ko.toJS(valueAccessor()));
+		},
+		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+			$(element).sevenSegArray("option", ko.toJS(valueAccessor()));
+		}
+	};
+}
 
 })(jQuery);
 
