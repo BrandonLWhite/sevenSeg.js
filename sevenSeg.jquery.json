@@ -1,0 +1,25 @@
+{
+	"name": "sevenSeg",
+	"version": "0.1.0",
+	"title": "sevenSeg.js",
+	"author": {
+		"name": "Brandon L White",
+		"email": "brandonlwhite@gmail.com"
+	},
+	"keywords": ["ui", "control", "svg", "seven-segment", "knockout"],
+	"description": "sevenSeg.js is a jQueryUI plugin for creating vector-based (SVG) seven-segment displays.  Bindings for Knockout included!",
+	"homepage": "http://brandonlwhite.github.io/sevenSeg.js",
+	"demo": "http://brandonlwhite.github.io/sevenSeg.js",
+	"docs": "http://brandonlwhite.github.io/sevenSeg.js",
+	"bugs": "https://github.com/BrandonLWhite/sevenSeg.js/issues",
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://brandonlwhite.github.io/sevenSeg.js/MIT-LICENSE.txt"
+		}
+	],
+	"dependencies": {
+		"jquery": ">=1.6",
+		"ui.core": ">=1.10.3"
+	}
+}
