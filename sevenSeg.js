@@ -13,17 +13,41 @@ $("<style type='text/css'>"
 $.widget("bw.sevenSeg", {
 
 options: {
+    /**
+    This option controls the display value on the 7seg.  Set this to the numeric digit you
+    want displayed.
+    */
     value: null,
+
+    /**
+    Override the default segment on color (Red).  
+    Note: You can alternatively define a CSS style for the class.sevenSeg-segOn that specifies a 'fill' color.
+    */
     colorOn: null,
+
+    /**
+    Override the default segment off color (#320000).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'fill' color.
+    */
     colorOff: null,
+
+    /**
+    Override the default background color of the display (Black).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'background-coloe' color.
+    */
     colorBackground: null,
     
     /**
+    This option allows skewing the segments to create a slant effect.
     Note: Setting "transform: skew()" in CSS is problematic for SVG. Would be nice to have, but browser support just 
     isn't there yet. So, setting the slant must be done through options.
     */
     slant: 0,  
 
+    /**
+    This flag controls the appearance of the decimal point 'dot' in the display.
+    The default is to display it (true), but you can set to false to omit it.
+    */
     decimalPoint: true
 },		
 
@@ -92,7 +116,10 @@ _setOption: function(key, value){
 },
 
 /**
-Call with null to blank out the display.
+This is the method to set the digit displayed.
+@param value The numeric digit to display.  Call with null to blank out the display.
+@param bDecimalPoint Set to true or false to drive the illumination state of the decimal point
+(does not apply if decimal point display is disabled)
 */
 displayValue: function(value, bDecimalPoint) {
     var self = this;
@@ -106,6 +133,9 @@ displayValue: function(value, bDecimalPoint) {
     self._setSvgElementFill(self.jqSvgElement.find("circle"), bDecimalPoint);
 },
 
+/**
+Return the bitfield mask for the segments to illuminate for the argumen numeric digit value.    
+*/
 _getSegments: function(value) {
     if(value === "-") return 0x40;
     return numberSegments[value];
@@ -137,13 +167,27 @@ if(ko && ko.bindingHandlers) {
 }
 
 /**
-TODO BW DOCME
+This widget creates a group comprised of any number of discrete sevenSegs.
 */
 $.widget("bw.sevenSegArray", {
 
 options: {
+    /**
+    This option controls the display value on the 7seg array.  Set this to the numeric value you
+    want displayed.
+    */
     value: null,
+
+    /**
+    Defines the number of digits that comprise the array.
+    */
     digits: 2,
+
+    /**
+    If you want to also specify control options for the internally created sevenSeg widgets, this is where you do it
+    Simply pass an object with any sevenSeg options you want as property/value pairs.
+    For example { colorOn: "Lime", colorOff: "#003200" }
+    */
     segmentOptions: null
 },		
 
@@ -185,7 +229,9 @@ _setOption: function(key, value){
 },
 
 /**
-Call with null to blank out the display.
+Set the value of the digits to display.  You simply call this with a number and the respective
+digits will be set.  Whatever digits that fit will be displayed, any additional will just be omitted.
+@param value The numeric value to display.  Call with null to blank out the display.
 */
 displayValue: function(value) {
     var self = this;    
