@@ -17,6 +17,18 @@
     <script src="sevenSeg.js"></script>
     <script src="demo.js"></script>
 	
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-44023738-2', 'brandonlwhite.github.io');
+        ga('send', 'pageview');
+    </script>
+
 	<style type="text/css">
 		body
 		{
@@ -41,13 +53,17 @@
             text-shadow: none;
 	    }
 
-	    .header
+	    .header, .footer
 	    {
             background-color: #333;
             color: #999;
-            padding: 0px 10px 25px 50px;
-			text-shadow: 0px 1px 0px Black;
+            text-shadow: 0px 1px 0px Black;
             font-size: 16px;
+	    }
+
+	    .header
+	    {
+            padding: 0px 10px 25px 50px;
 	    }
 
 	    .header p
@@ -55,6 +71,18 @@
             margin-top: 0;
             margin-bottom: 0;
             margin-left: 9px;
+	    }
+
+	    .footer
+	    {
+            font-size: 12px;
+            height: 50px;   
+            padding: 15px 50px 0 50px;
+	    }
+
+	    .footer a
+	    {
+            color: white;
 	    }
 
 		h1
@@ -84,7 +112,7 @@
 			display: inline-block;
 			background-color: Black;
 			border-radius: 5px;
-            margin-left: 12px;
+            margin-left: 18px;
 		}
 		
 	    .big-single-sevenSeg
@@ -119,6 +147,11 @@
 	    .resizableExample div:first-child
 	    {
 	        height: 100%;
+	    }
+
+	    pre.prettyprint
+	    {
+            margin-left: 18px;
 	    }
 	</style>
 </head>
@@ -353,5 +386,17 @@ options: {
     <button id="btnDestroy">Destroy</button>
     <div id="testArray2" class="med-sevenSegArray5"></div>
 </div>
+
+<div class="footer">
+    <div style="float: left;">        
+        sevenSeg.js is released under the <a href="MIT-LICENSE.txt">MIT License</a>.
+        Copyright &copy; 2013 Brandon L White.
+    </div>
+    <div style="float: right;">
+        Source code available on <a href="https://github.com/BrandonLWhite/sevenSeg.js">Github</a>
+    </div>
+</div>
+
+<a href="https://github.com/BrandonLWhite/sevenSeg.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 </body>
 </html>
