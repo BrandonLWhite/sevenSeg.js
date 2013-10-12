@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>sevenSeg.js</title>
 	
-	<link href='http://fonts.googleapis.com/css?family=Iceberg' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-darkness/jquery-ui.css" />   
+	<link href="http://fonts.googleapis.com/css?family=Iceberg" rel="stylesheet">
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-darkness/jquery-ui.css" rel="stylesheet">   
+    <link href="prettify.css" rel="stylesheet">
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
     
     <script src="sevenSeg.js"></script>
     <script src="demo.js"></script>
@@ -18,88 +20,338 @@
 	<style type="text/css">
 		body
 		{
-			background-color: #DDDDDD;
+			margin: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.428571429;
+            background-color: #DDDDDD;
 			color: #333;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAIAAACT77x+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGRjdGMTE3NDA3MjA2ODExOEE2REIyNzRCMzE4MEZDQSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0MDJBOTUyRTMzMkYxMUUxOEEyOEIyMUM0RkExMjkyMiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1REEyREQ5MjMzMkUxMUUxOEEyOEIyMUM0RkExMjkyMiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjU5MkM5NkJBMzAyMDY4MTE4QTZEQjI3NEIzMTgwRkNBIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkZGN0YxMTc0MDcyMDY4MTE4QTZEQjI3NEIzMTgwRkNBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+GUafGwAADVRJREFUeNps29l6HMeuhFGblgfp/Z/S99b27APyby2GWqcv+itWV2UiMQQCyOT3v/766z///PP999//999/d/Hzzz//9ddf3799/v3337vz3Xff3c2Xl5e7f8/00128vH1+//33+747f//99w8//HDX+8y9e983zl3cr3fzBrxnzHjfd78ZP3z4kAx33Zj3Vs93567vgSZqrru+73vspvjv7fPy559/3m9NmdB+7iI5/n373M378ya+n26spGnEu/njjz/e9X33QCtJlLt5d/7444+EI9DdbDGmu5v3U8LdFO50/d3bJzF6vkV696VB724rST0pMombLM0lYvfv+vPnzxTZglPYTXYPr1J67KeffrqFNUVi9f3h7ZOU9+stO0nSXSPfRZrNNRIvd0hZ93k1cqJbQ8qjiRulce9O6t/H2LoLFk5cS80xGufcwUr6cyXekZsoS96Y98Cpg/Qpl7Q9/3qRKe/RFNDczXdvprCkIUfO5oF0llh5VxNk1XvgHstWaa3F//32acaUlYIvVkVOs9z3Lbs193pDdXHf92tjvtqnmXq6J5omfeSEVg82BHeLbJ0NyotEXT/RVNF1302UoQySClptC7vvW+0Jk1oTJssQppFfLDFNAKJ035+5mVjaxbR42JU/CLMGvGDomnCCoZjxafzivl+58Y3cu/lz2FOIPqHIB94vTDcqmgBScYbWnPQtQ9gAYuF0z/zyyy95dZjRdL4bNu2Aii4AmjUXZtwvUyfnK0JwaHHm/R4KUguVIAWss9hGc27THPfkyZprpSOxwUUL0f01fQV6DVjqO3WcteUiaeriJ0W8upKQyAhZeXPf3T+ZAEMA5ZM30mhDAQN41RpSKvzM1WULmJGUjSDW71eJXnJ70vurT6WbVOhpOnMnsfL7niyoVrhv3fVWe0KUT2TAHXZXZakyaTbM4QODM9HiG3/Lkq+z8xCmF+JpNyC2PMCaZE0Tai3HkY5Iz/tB2aa+ZuHere1eRzXORyTNVLAaue9jXq/3aTr3zd8a16PIW678z9sHkEDzRghnrPY0mklBXHP1el6U6PfkDRt2JXQmys4L0Hx7hXwkYqmaFxbx6FDSh5itJ1PcRY+tFzUlzfUAdIIc+Ftk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); 
 		}
-		
+
+	    li
+	    {
+            margin-bottom: 0.75em;
+	    }
+
+	    pre
+	    {
+            font-size: 14px;
+            line-height: 16px;
+            text-shadow: none;
+	    }
+
+	    .header
+	    {
+            background-color: #333;
+            color: #999;
+            padding: 0px 10px 25px 50px;
+			text-shadow: 0px 1px 0px Black;
+            font-size: 16px;
+	    }
+
+	    .header p
+	    {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 9px;
+	    }
+
 		h1
 		{
-			font-size: 124pt;
+			font-size: 130px;
 			font-family: 'Iceberg', cursive;
-			text-shadow: 0px 1px 0px #fff;
 			margin-top: 0;
-			margin-bottom: 20px;
+            margin-bottom: 0;
+            color: #B4B4B4;
+            text-shadow: 2px 2px 6px black;
 		}
-		
+
+	    h2
+	    {
+            font-size: 26px;
+            margin-top: 45px;
+	    }
+
+	    .content
+	    {
+            margin-left: 50px;
+            text-shadow: 0px 1px 0px #fff;
+	    }
+
 		.exampleContainer
 		{
 			display: inline-block;
 			background-color: Black;
 			border-radius: 5px;
+            margin-left: 12px;
 		}
 		
-		#example1
-		{
+	    .big-single-sevenSeg
+	    {
 			padding: 0.5em; 
 			height: 100px; 
 			width: 100px;
-		}
+	    }
+
+	    .med-sevenSegArray5
+	    {
+	        padding: 0.25em;
+	        height: 50px;
+	        width: 200px;
+	    }
+
+	    .med-sevenSegArray5Slanted
+	    {
+	        padding: 0.25em;
+	        height: 75px;
+	        width: 370px;
+	    }
+
+	    .resizableExample
+	    {
+	        margin: 1em;
+	        padding: 0.5em;
+	        height: 120px;
+	        width: 80px;
+	    }
+
+	    .resizableExample div:first-child
+	    {
+	        height: 100%;
+	    }
 	</style>
 </head>
 <body>
-<h1>sevenSeg.js</h1>
-
-sevenSeg.js is a tiny Javascript library for creating vector-based (SVG) seven-segment displays in HTML.
-
-<h2>Features</h2>
-<ul>
-	<li>TODO</li>
-</ul>
-
-<h2>Basic example</h2>
-<div class="exampleContainer">
-	<div id="example1"></div>
-</div>
-<p>
-	$("#example1").sevenSeg();
-	setInterval is then used to increment and set the 'value' option.
-</p>
-
-<h2>Using Knockout databinding "sevenSeg"</h2>
-<div class="exampleContainer">
-	<div data-bind="sevenSeg: {value: testVal1}" style="padding: 0.5em; height: 50px; width: 40px;"></div>
-</div>	
-<input data-bind="value: testVal1, valueUpdate: 'afterkeydown'" style="width: 2em; vertical-align: top;" />
-
-<h2>TODO : sevenSegArray jQueryUI widget example.</h2>
-
-<h2>Using Knockout databinding "sevenSegArray"</h2>
-<div>
-	<div class="exampleContainer">
-		<div data-bind="sevenSegArray: {digits: 5, value: testVal2}" style="padding: 0.25em; height: 50px; width: 200px;"></div>
-	</div>
-	<input data-bind="value: testVal2, valueUpdate: 'afterkeydown'" style="width: 5em;" />
+<div class="header">
+    <h1>sevenSeg.js</h1>
+    <p>A tiny JavaScript jQuery UI plugin for creating vector-based (SVG) seven-segment displays in HTML.</p>
 </div>
 
-<h2>Inside of a jQueryUI resizazble</h2>
-<div id="testResizableDiv" class="exampleContainer" style="margin: 1em; padding: 0.5em; height: 120px; width: 80px;">
-    <div id="testSegInsideResizable" style="height: 100%;"></div>
+<div class="content">
+    <h2>Example</h2>
+    <div class="exampleContainer">
+	    <div data-bind="sevenSegArray: { digits: 5, value: mainExampleValue }" style="padding: 0.5em; height: 100px; width: 420px;"></div>
+    </div>
+
+    <h2>Features</h2>
+    <ul>
+        <li>No images. All graphics are drawn using HTML SVG that scales to any size.</li>
+        <li>No external CSS file. Default style classes are injected into your page. 
+            <br />If you want to tailor the style classes in your own CSS you can. 
+            <br />You can also individually style the individual widgets via options. It's your choice.</li>
+        <li>Databinders for <a href="http://knockoutjs.com/">Knockout</a> MVVM.</li>
+        <li>MIT License.</li> 
+    </ul>
+
+    <h2>Usage</h2>
+        Include jQuery and jQuery UI in your HTML before including sevenSeg.js.
+        If you intend to use Knockout it needs to be included before sevenSeg.js too, but it's completely optional.
+
+    <pre class="prettyprint"><xmp class="language-html">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script src="sevenSeg.js"></script>
+    </xmp></pre>
+
+    <p>
+        You can then instantiate <code>sevenSeg</code> and <code>sevenSegArray</code> widgets on any div's of your choosing.  <br />
+        <code>sevenSeg</code> creates a single digit display, and <code>sevenSegArray</code> creates a group containing an arbitrary number of digits. You'll most likely want to use <code>sevenSegArray</code>.
+        (See examples below).  
+    </p>
+
+    <p>These are the widget options supported by <code>sevenSeg</code>:</p>
+
+    <pre class="prettyprint"><code class="language-javascript">
+options: {
+    /**
+    This option controls the display value on the 7seg.  Set this to the numeric digit you
+    want displayed.
+    */
+    value: null,
+
+    /**
+    Override the default segment on color (Red).  
+    Note: You can alternatively define a CSS style for the class.sevenSeg-segOn that specifies a 'fill' color.
+    */
+    colorOn: null,
+
+    /**
+    Override the default segment off color (#320000).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'fill' color.
+    */
+    colorOff: null,
+
+    /**
+    Override the default background color of the display (Black).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'background-color' color.
+    */
+    colorBackground: null,
+    
+    /**
+    This option allows skewing the segments to create a slant effect.
+    Note: Setting "transform: skew()" in CSS is problematic for SVG. Would be nice to have, but browser support just 
+    isn't there yet. So, setting the slant must be done through options.
+    */
+    slant: 0,  
+
+    /**
+    This flag controls the appearance of the decimal point 'dot' in the display.
+    The default is to display it (true), but you can set to false to omit it.
+    */
+    decimalPoint: true
+}		
+    </code></pre>
+
+    <h2>Basic Example</h2>
+    <div class="exampleContainer">
+	    <div id="exampleSingle" class="big-single-sevenSeg"></div>
+    </div>
+
+    <pre class="prettyprint">
+    // In your HTML you have something like this:
+    //
+    &lt;div id=&quot;example1&quot;&gt;&lt;/div&gt;
+
+    // Then in script you simply do this. Nothing to it!
+    //
+    $("#example1").sevenSeg({ value: 7 });
+    </pre>
+
+    <p>Note: You will certainly want to style your div to your liking particularly the height and width.  For these examples I'm doing something like: 
+        "padding: 0.5em; height: 100px; width: 100px;"
+    </p>
+
+    <h2>Using Knockout sevenSeg Databinding</h2>
+    <p>If you are using Knockout, then it gets even easier.  Let's assume you have a View Model with a <code>testValue1</code> observable.  
+        You can then use the <code>sevenSeg</code> databinding in your markup.
+        (Change the value in the edit box and Knockout will keep the sevenSeg in sync).
+    </p>
+    <div class="exampleContainer">
+	    <div data-bind="sevenSeg: {value: testValue1}" class="big-single-sevenSeg"></div>
+    </div>	
+    <input data-bind="value: testValue1, valueUpdate: 'afterkeydown'" maxlength="1" style="width: 2em; vertical-align: top;" />
+
+    <pre class="prettyprint">&lt;div data-bind=&quot;sevenSeg: {value: testValue1}&quot;&gt;&lt;/div&gt;</pre>
+
+    <h2>Using sevenSegArray</h2>
+    <p>
+        This will show you how to create displays featuring multiple digits.  To do this, you use the 
+        <code>sevenSegArray</code> widget.  Just like the single <code>sevenSeg</code>, it too has a <code>value</code>
+        option.  Except with <code>sevenSegArray</code>, you can assign numbers containing more than one digit to <code>value</code>.
+    </p>
+    <div class="exampleContainer">
+	    <div id="exampleArray" class="med-sevenSegArray5"></div>
+    </div>	
+
+    <pre class="prettyprint">
+    // In your HTML you have something like this:
+    //
+    &lt;div id=&quot;exampleArray&quot;&gt;&lt;/div&gt;
+
+    // Then in script you simply do this. Nothing to it!
+    //
+    $("#exampleArray").sevenSegArray({ digits: 5, value: 12.35 });
+    </pre>
+
+    <h2>Using Knockout sevenSegArray Databinding</h2>
+    <p>There's a corresponding <code>sevenSegArray</code> databinding for Knockout.  
+        Let's assume you have a View Model with a <code>testValue2</code> observable.  
+        You can then use the <code>sevenSegArray</code> databinding in your markup.
+        (Change the value in the edit box and Knockout will keep the sevenSeg in sync).
+        <br />
+        You may notice that <em>negative numbers will render a minus symbol in the array.</em>
+    </p>
+
+    <div>
+	    <div class="exampleContainer">
+		    <div data-bind="sevenSegArray: {digits: 5, value: testValue2}" class="med-sevenSegArray5"></div>
+	    </div>
+	    <input data-bind="value: testValue2, valueUpdate: 'afterkeydown'" style="width: 5em;" />
+    </div>
+
+    <pre class="prettyprint">&lt;div data-bind=&quot;sevenSegArray: {digits: 5, value: testValue2}&quot;&gt;&lt;/div&gt;</pre>
+
+    <h2>Inside of a jQueryUI resizable</h2>
+    <p>
+    This demonstrates the dynamic sizing capabilities of sevenSeg.  In this example, a <code>sevenSeg</code>
+    widget is wrapped in a jQueryUI <code><a href="http://jqueryui.com/resizable/">resizable</a></code> widget.  This allows you to pull the gripper in the corner
+    to resize the display to whatever size you like.
+    <br />Go ahead and give it a try!
+    </p>
+
+    <div id="testResizableDiv" class="exampleContainer resizableExample">
+        <div id="testSegInsideResizable"></div>
+    </div>
+
+    <div id="testResizableDiv2" class="exampleContainer resizableExample" style="width: 275px;">
+        <div id="testResizableArray"></div>
+    </div>
+
+    <h5>HTML Markup</h5>
+    <pre class="prettyprint">
+    &lt;div id=&quot;testResizableDiv&quot; class=&quot;exampleContainer resizableExample&quot;&gt;
+        &lt;div id=&quot;testSegInsideResizable&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;testResizableDiv2&quot; class=&quot;exampleContainer resizableExample&quot; style=&quot;width: 275px;&quot;&gt;
+        &lt;div id=&quot;testResizableArray&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;</pre>
+
+    <h5>CSS</h5>
+    <pre class="prettyprint">
+    .exampleContainer
+    {
+        display: inline-block;
+        background-color: Black;
+        border-radius: 5px;
+        margin-left: 12px;
+    }
+
+    .resizableExample
+    {
+        margin: 1em;
+        padding: 0.5em;
+        height: 120px;
+        width: 80px;
+    }
+
+    .resizableExample div:first-child
+    {
+        height: 100%;
+    }
+    </pre>    
+
+    <h5>Script</h5>
+    <pre class="prettyprint">
+    $("#testResizableDiv").resizable({ aspectRatio: true });
+    $("#testSegInsideResizable").sevenSeg({ value: 8 });
+
+    $("#testResizableArray").sevenSegArray({ digits: 3 });
+    $("#testResizableDiv2").resizable({ aspectRatio: true });
+
+    var iArrayValue = 0;
+    setInterval(function() {
+        $("#testResizableArray").sevenSegArray({ value: iArrayValue });
+        if(++iArrayValue > 999) { 
+            iArrayValue = 0; 
+        }
+    }, 50);
+    </pre>
+
+    <h2>Full page sevenSegArray</h2>
+    Click <a href="fullPage.html" target="_blank">this link</a> to view a full-page sevenSegArray demonstration.
+    <br />Put your browser in full-screen mode and voil&agrave;, DIY scoreboard!
+
+    <h2>Customizing options</h2>
+    <div class="exampleContainer">
+	    <div id="testArray1" class="med-sevenSegArray5Slanted"></div>
+    </div>
+
+    <h2>jQuery UI widget create and destroy</h2>
+    <button id="btnCreate">Create</button>
+    <button id="btnDestroy">Destroy</button>
+    <div id="testArray2" class="med-sevenSegArray5"></div>
 </div>
-
-<div id="testResizableDiv2" class="exampleContainer" style="margin: 1em; padding: 0.5em; height: 40px; width: 125px;">
-    <div id="testArray" style="height: 100%;"></div>
-</div>
-
-<h2>TODO: Link to full page sevenSegArray</h2>
-
-<h2>Customizing options</h2>
-<div class="exampleContainer">
-	<div id="testArray1" style="padding: 1em; height: 80px; width:400px"></div>
-</div>
-
-<h2>jQuery UI widget create and destroy</h2>
-<button id="btnCreate">Create</button>
-<button id="btnDestroy">Destroy</button>
-<div id="testArray2" style="padding: 1em; height: 60px;"></div>
 </body>
 </html>

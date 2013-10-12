@@ -1,28 +1,27 @@
 $(function () {
     var viewModel = {
-        testVal1 : ko.observable(5),
-        testVal2 : ko.observable(-12.4)
+        mainExampleValue: ko.observable(-5.234),
+        testValue1: ko.observable(5),
+        testValue2: ko.observable(-12.4)
     };
     ko.applyBindings(viewModel);
 
-    $("#example1").sevenSeg();
+    $("#exampleSingle").sevenSeg({ value: 7 });
+    $("#exampleArray").sevenSegArray({ digits: 5, value: 12.35 });
 
-    var iValue = 0;
     setInterval(function() {
-        $("#example1").sevenSeg({value: iValue});
-        if(++iValue > 9) {
-			iValue = 0;
-		}
-    }, 200);
+        var value = +viewModel.mainExampleValue() + 0.001;
+        viewModel.mainExampleValue(value.toFixed(3));
+    }, 100);
 
     $("#testResizableDiv").resizable({aspectRatio: true});
     $("#testSegInsideResizable").sevenSeg({value: 8});
 
-    $("#testArray").sevenSegArray({digits:3});    
+    $("#testResizableArray").sevenSegArray({ digits: 3 });
     $("#testResizableDiv2").resizable({aspectRatio: true});
     var iArrayValue = 0;
     setInterval(function() {
-        $("#testArray").sevenSegArray({value: iArrayValue});
+        $("#testResizableArray").sevenSegArray({ value: iArrayValue });
         if(++iArrayValue > 999) { 
 			iArrayValue = 0; 
 		}
@@ -45,4 +44,6 @@ $(function () {
     $("#btnDestroy").click(function() {
         $("#testArray2").sevenSegArray("destroy");
     });
+
+    prettyPrint();
 });

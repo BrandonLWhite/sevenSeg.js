@@ -33,7 +33,7 @@ options: {
 
     /**
     Override the default background color of the display (Black).  
-    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'background-coloe' color.
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'background-color' color.
     */
     colorBackground: null,
     
