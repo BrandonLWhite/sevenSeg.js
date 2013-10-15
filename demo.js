@@ -6,8 +6,8 @@ $(function () {
     };
     ko.applyBindings(viewModel);
 
-    $("#exampleSingle").sevenSeg({ value: 7 });
-    $("#exampleArray").sevenSegArray({ digits: 5, value: 12.35 });
+    $("#exampleSingle").sevenSeg({ value: 5 });
+    $("#exampleArray").sevenSeg({ digits: 5, value: 12.35 });
 
     setInterval(function() {
         var value = +viewModel.mainExampleValue() + 0.001;
@@ -17,32 +17,30 @@ $(function () {
     $("#testResizableDiv").resizable({aspectRatio: true});
     $("#testSegInsideResizable").sevenSeg({value: 8});
 
-    $("#testResizableArray").sevenSegArray({ digits: 3 });
+    $("#testResizableArray").sevenSeg({ digits: 3 });
     $("#testResizableDiv2").resizable({aspectRatio: true});
     var iArrayValue = 0;
     setInterval(function() {
-        $("#testResizableArray").sevenSegArray({ value: iArrayValue });
+        $("#testResizableArray").sevenSeg({ value: iArrayValue });
         if(++iArrayValue > 999) { 
 			iArrayValue = 0; 
 		}
     }, 50);
 
-    $("#testArray1").sevenSegArray({
+    $("#testArray1").sevenSeg({
 		digits:5, 
 		value:-98.76, 
-		segmentOptions: {
-			colorOff: "#003200", 
-			colorOn: "Lime", 
-			slant: 10
-		}
+		colorOff: "#003200", 
+		colorOn: "Lime", 
+		slant: 10
 	});
     
     $("#btnCreate").click(function() {
-        $("#testArray2").sevenSegArray({digits:4, value:12.34});
+        $("#testArray2").sevenSeg({digits:4, value:12.34});
     });
 
     $("#btnDestroy").click(function() {
-        $("#testArray2").sevenSegArray("destroy");
+        $("#testArray2").sevenSeg("destroy");
     });
 
     prettyPrint();

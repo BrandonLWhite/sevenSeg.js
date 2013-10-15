@@ -164,7 +164,7 @@
 <div class="content">
     <h2>Example</h2>
     <div class="exampleContainer">
-	    <div data-bind="sevenSegArray: { digits: 5, value: mainExampleValue }" style="padding: 0.5em; height: 100px; width: 420px;"></div>
+	    <div data-bind="sevenSeg: { digits: 5, value: mainExampleValue }" style="padding: 0.5em; height: 100px; width: 420px;"></div>
     </div>
 
     <h2>Features</h2>
@@ -189,7 +189,7 @@
     </xmp></pre>
 
     <p>
-        You can then instantiate <code>sevenSeg</code> and <code>sevenSegArray</code> widgets on any div's of your choosing.  <br />
+        You can then instantiate <code>sevenSeg</code> widgets on any div's of your choosing.  <br />
         <code>sevenSeg</code> creates a single digit display, and <code>sevenSegArray</code> creates a group containing an arbitrary number of digits. You'll most likely want to use <code>sevenSegArray</code>.
         (See examples below).  
     </p>
@@ -249,7 +249,7 @@ options: {
 
     // Then in script you simply do this. Nothing to it!
     //
-    $("#example1").sevenSeg({ value: 7 });
+    $("#example1").sevenSeg({ value: 5 });
     </pre>
 
     <p>Note: You will certainly want to style your div to your liking particularly the height and width.  For these examples I'm doing something like: 
@@ -285,7 +285,7 @@ options: {
 
     // Then in script you simply do this. Nothing to it!
     //
-    $("#exampleArray").sevenSegArray({ digits: 5, value: 12.35 });
+    $("#exampleArray").sevenSeg({ digits: 5, value: 12.35 });
     </pre>
 
     <h2>Using Knockout sevenSegArray Databinding</h2>
@@ -299,12 +299,12 @@ options: {
 
     <div>
 	    <div class="exampleContainer">
-		    <div data-bind="sevenSegArray: {digits: 5, value: testValue2}" class="med-sevenSegArray5"></div>
+		    <div data-bind="sevenSeg: {digits: 5, value: testValue2}" class="med-sevenSegArray5"></div>
 	    </div>
 	    <input data-bind="value: testValue2, valueUpdate: 'afterkeydown'" style="width: 5em;" />
     </div>
 
-    <pre class="prettyprint">&lt;div data-bind=&quot;sevenSegArray: {digits: 5, value: testValue2}&quot;&gt;&lt;/div&gt;</pre>
+    <pre class="prettyprint">&lt;div data-bind=&quot;sevenSeg: {digits: 5, value: testValue2}&quot;&gt;&lt;/div&gt;</pre>
 
     <h2>Inside of a jQueryUI resizable</h2>
     <p>
@@ -360,12 +360,12 @@ options: {
     $("#testResizableDiv").resizable({ aspectRatio: true });
     $("#testSegInsideResizable").sevenSeg({ value: 8 });
 
-    $("#testResizableArray").sevenSegArray({ digits: 3 });
+    $("#testResizableArray").sevenSeg({ digits: 3 });
     $("#testResizableDiv2").resizable({ aspectRatio: true });
 
     var iArrayValue = 0;
     setInterval(function() {
-        $("#testResizableArray").sevenSegArray({ value: iArrayValue });
+        $("#testResizableArray").sevenSeg({ value: iArrayValue });
         if(++iArrayValue > 999) { 
             iArrayValue = 0; 
         }

@@ -1,16 +1,18 @@
 ﻿(function($) {
 
-var numberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http://en.wikipedia.org/wiki/Seven-segment_display
+var c_aNumberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http://en.wikipedia.org/wiki/Seven-segment_display
+var c_sClassSvg = "sevenSeg-svg";
+var c_sClassSegOn = "sevenSeg-segOn";
 
 // Default CSS styles. If you don't specify your own CSS or discrete color options, this is what gets used.
 // 
 $("<style type='text/css'>" 
-    + ".sevenSeg-svg {fill: #320000; overflow: hidden; stroke-width: 0; height: 100%; width: 100%; background-color: Black}"
-    + ".sevenSeg-segOn {fill: Red}"
+    + "." + c_sClassSvg + "{fill: #320000; overflow: hidden; stroke-width: 0; height: 100%; width: 100%; background-color: Black}"
+    + "." + c_sClassSegOn + "{fill: Red}"
     + "</style>")
     .prependTo("head");
 
-$.widget("bw.sevenSeg", {
+$.widget("bw.sevenSegDigit", {
 
 options: {
     /**
@@ -56,7 +58,7 @@ Widget factory creation handler.
 */
 _create: function () {
     this.jqSvgElement = $("<svg/>", {
-        class: this.widgetName + "-svg",
+        class: c_sClassSvg,
         viewBox: "0 0 57 80",
         version: "1.1", 
         xmlns: "http://www.w3.org/2000/svg", 
@@ -122,7 +124,7 @@ This is the method to set the digit displayed.
 */
 displayValue: function(value, bDecimalPoint) {
     var self = this;
-    if(value >= numberSegments.length) return;
+    if (value >= c_aNumberSegments.length) return;
     self.options.value = value;
     var segments = self._getSegments(value);
     self.jqSegments.children().each(function(index, element) {                     
@@ -137,13 +139,13 @@ Return the bitfield mask for the segments to illuminate for the argumen numeric 
 */
 _getSegments: function(value) {
     if(value === "-") return 0x40;
-    return numberSegments[value];
+    return c_aNumberSegments[value];
 },
 
 _setSvgElementFill: function(jqElement, bOn) {
     // jQuery addClass/removeClass doesn't work with svg <use> elements. So we have to do it the old way.
     //
-    jqElement.attr("class", bOn && (this.widgetName + "-segOn"));
+    jqElement.attr("class", bOn && c_sClassSegOn);
     
     // Set the fill style if options.colorOn is defined. This overrides CSS definitions.
     //
@@ -152,23 +154,10 @@ _setSvgElementFill: function(jqElement, bOn) {
 
 });
 
-// Plugin Knockout binding handler for sevenSeg if KO is defined.
-//
-if(ko && ko.bindingHandlers) {
-	ko.bindingHandlers.sevenSeg = {
-		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-			$(element).sevenSeg(ko.toJS(valueAccessor()));
-		},
-		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-			$(element).sevenSeg("option", ko.toJS(valueAccessor()));
-		}
-	};
-}
-
 /**
 This widget creates a group comprised of any number of discrete sevenSegs.
 */
-$.widget("bw.sevenSegArray", {
+$.widget("bw.sevenSeg", {
 
 options: {
     /**
@@ -180,18 +169,11 @@ options: {
     /**
     Defines the number of digits that comprise the array.
     */
-    digits: 2,
-
-    /**
-    If you want to also specify control options for the internally created sevenSeg widgets, this is where you do it
-    Simply pass an object with any sevenSeg options you want as property/value pairs.
-    For example { colorOn: "Lime", colorOff: "#003200" }
-    */
-    segmentOptions: null
+    digits: 1,
 },		
 
 /**
-Widget factory creation handler.
+Widget factory creation handler. This will create N number of sevenSegDigit widgets, one for each digit.
 */
 _create: function () {
     this.aJqDigits = [];
@@ -199,18 +181,16 @@ _create: function () {
     for(var iDigit = 0; iDigit < this.options.digits; ++iDigit) {
         this.aJqDigits[iDigit] = $("<div/>", {style: "display: inline-block; height: 100%;"})
             .css("width", sDigitWidth) 
-            .sevenSeg(this.options.segmentOptions)
+            .sevenSegDigit(this.options)
             .appendTo(this.element);
     }
     this.aJqDigits.reverse();
-    if(this.options.value) {
-        this.displayValue(this.options.value);
-    }
+    this.displayValue(this.options.value);
 },
 
 _destroy: function() {
     $.each(this.aJqDigits, function(index, jqDigit) {
-        jqDigit.sevenSeg("destroy");
+        jqDigit.sevenSegDigit("destroy");
         jqDigit.remove();
     });
 },
@@ -234,7 +214,7 @@ digits will be set.  Whatever digits that fit will be displayed, any additional 
 */
 displayValue: function(value) {
     var self = this;    
-    var sValue = value.toString();
+    var sValue = value ? value.toString() : "";
     var iDecimalIdx = sValue.indexOf('.');
     var iDigitIdx = sValue.length - 1;
     $.each(self.aJqDigits, function(index, jqDigit) {
@@ -244,7 +224,7 @@ displayValue: function(value) {
         }
 
         var sDigitValue = sValue[iDigitIdx];        
-        jqDigit.sevenSeg("displayValue", sDigitValue, bDecimal);
+        jqDigit.sevenSegDigit("displayValue", sDigitValue, bDecimal);
         
         --iDigitIdx;
     });
@@ -252,15 +232,12 @@ displayValue: function(value) {
 
 });
 
-// Plugin Knockout binding handler for sevenSegArray if KO is defined.
+// Plugin the Knockout binding handler for sevenSeg if KO is defined.
 //
 if(ko && ko.bindingHandlers) {
-	ko.bindingHandlers.sevenSegArray = {
-		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-			$(element).sevenSegArray(ko.toJS(valueAccessor()));
-		},
+	ko.bindingHandlers.sevenSeg = {
 		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
-			$(element).sevenSegArray("option", ko.toJS(valueAccessor()));
+			$(element).sevenSeg(ko.toJS(valueAccessor()));
 		}
 	};
 }
