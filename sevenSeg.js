@@ -88,7 +88,6 @@ _create: function () {
     }
     
     this.jqSvgElement.appendTo(this.element);
-    this.element.append(this.jqSvgElement);
     
     // http://stackoverflow.com/a/13654655/390906
     //
