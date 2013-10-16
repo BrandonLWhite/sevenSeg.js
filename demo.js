@@ -1,8 +1,7 @@
 $(function () {
     var viewModel = {
         mainExampleValue: ko.observable(-5.234),
-        testValue1: ko.observable(5),
-        testValue2: ko.observable(-12.4)
+        testValue1: ko.observable(-12.4)
     };
     ko.applyBindings(viewModel);
 

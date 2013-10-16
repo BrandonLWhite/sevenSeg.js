@@ -169,7 +169,7 @@ options: {
     /**
     Defines the number of digits that comprise the array.
     */
-    digits: 1,
+    digits: 1
 },		
 
 /**
