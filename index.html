@@ -117,6 +117,11 @@
             margin-right: 18px;
 		}
 
+	    .exampleInput:hover
+	    {
+            box-shadow: 0px 0px 6px 1px #B00000;
+	    }
+
 	    .big-sevenSeg
 	    {
 			padding: 0.5em; 
@@ -299,6 +304,18 @@ options: {
     </div>
 
     <pre class="prettyprint">&lt;div data-bind=&quot;sevenSeg: {digits: 5, value: testValue1}&quot;&gt;&lt;/div&gt;</pre>
+
+    <h2>Mousewheel Input and 2-way Databinding</h2>
+    <p>TODO</p>
+
+    <div>
+	    <div class="exampleContainer exampleInput">
+		    <div data-bind="sevenSeg: { digits: 5, value: testValue2, allowInput: true, step: 0.1, decimalPlaces: 1 }" class="med-sevenSegArray5"></div>
+	    </div>
+	    <input data-bind="value: testValue2, valueUpdate: 'afterkeydown'" style="width: 10em;" />
+    </div>
+
+    <pre class="prettyprint">TODO</pre>
 
     <h2>Inside of a jQueryUI resizable</h2>
     <p>

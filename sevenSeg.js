@@ -155,7 +155,7 @@ _setSvgElementFill: function(jqElement, bOn) {
 });
 
 /**
-This widget creates a group comprised of any number of discrete sevenSegs.
+This widget creates a group comprised of any number of discrete sevenSegDigits.
 */
 $.widget("bw.sevenSeg", {
 
@@ -169,7 +169,30 @@ options: {
     /**
     Defines the number of digits that comprise the array.
     */
-    digits: 1
+    digits: 1,
+
+    /**
+    Set this to true to allow sevenSeg to respond to the mousewheel event, which
+    will allow you to change the display value by spinning the mousewheel up or down.
+    (The default step is +/- 1, but you can set that in the step option).
+    */
+    allowInput: false,
+
+    /**
+    This setting controls the +/- delta value whenever the sevenSeg is incremented up or down (via mousewheel).
+    The allowInput option must be true for this setting to be of use.
+    */
+    step: 1,
+
+    /**
+    This controls the number of decimal places displayed.  The default -1 results in no rounding and displays the value
+    as-is.  A value of 0 or more defines the number of fixed decimal places that the numeric value will be rounded to.
+    
+    If you intend to set display values that are the result of floating point operations, including the
+    use of allowInput=true and a fractional step size, then you most definitely want to set this to a specific value due
+    to floating point inaccuracies.
+    */
+    decimalPlaces: -1
 },		
 
 /**
@@ -177,15 +200,18 @@ Widget factory creation handler. This will create N number of sevenSegDigit widg
 */
 _create: function () {
     this.aJqDigits = [];
-    var sDigitWidth = 100/this.options.digits + "%";
+    var sDigitWidth = this.options.digits && (100 / this.options.digits + "%");
+
     for(var iDigit = 0; iDigit < this.options.digits; ++iDigit) {
         this.aJqDigits[iDigit] = $("<div/>", {style: "display: inline-block; height: 100%;"})
             .css("width", sDigitWidth) 
             .sevenSegDigit(this.options)
             .appendTo(this.element);
     }
+
     this.aJqDigits.reverse();
-    this.displayValue(this.options.value);
+    this._displayValue(this.options.value);
+    this._bindMouseWheel();
 },
 
 _destroy: function() {
@@ -195,12 +221,42 @@ _destroy: function() {
     });
 },
 
+/**
+Setup event handler for mousewheel spins, if options.allowInput is set.
+This will inc/dec the display value in response to spinning the wheel up or down.
+*/
+_bindMouseWheel: function () {
+    var self = this;
+
+    // Chrome and IE use the "mousewheel" event while FF uses "wheel".
+    //
+    var sEventName = "onwheel" in document ? "wheel" : "mousewheel";
+
+    self._off(self.element, sEventName);
+    if (!self.options.allowInput) return;
+    
+    var eventHandler = {};
+    eventHandler[sEventName] = function (eventInfo) {
+        var step = self.options.step;
+
+        // Chrome and IE specify wheelDelta while FF uses deltaY (with reverse polarity).
+        //
+        var delta = eventInfo.originalEvent.wheelDelta || -eventInfo.originalEvent.deltaY;
+        if (delta < 0) step = -step;
+
+        self.option("value", parseFloat(self.options.value, 10) + step);
+        eventInfo.preventDefault();
+    };
+
+    self._on(eventHandler);
+},
+
 _setOption: function(key, value){
 	this.options[key] = value;
  
 	switch(key){
 		case "value":
-			this.displayValue(value);
+			this._displayValue(value);
 			break;
         
         // TODO BW : Add other options.
@@ -212,11 +268,12 @@ Set the value of the digits to display.  You simply call this with a number and 
 digits will be set.  Whatever digits that fit will be displayed, any additional will just be omitted.
 @param value The numeric value to display.  Call with null to blank out the display.
 */
-displayValue: function(value) {
-    var self = this;    
-    var sValue = value ? value.toString() : "";
+_displayValue: function(value) {
+    var self = this;
+    var sValue = self._createValueString(value);
     var iDecimalIdx = sValue.indexOf('.');
     var iDigitIdx = sValue.length - 1;
+
     $.each(self.aJqDigits, function(index, jqDigit) {
         var bDecimal = iDecimalIdx >= 0 && iDigitIdx === iDecimalIdx;
         if(bDecimal) {
@@ -228,6 +285,21 @@ displayValue: function(value) {
         
         --iDigitIdx;
     });
+
+    self._trigger("change", null, value);
+},
+
+/**
+Given a value that can be a string, numeric, or null, form and return a string to use for driving the display.
+If the value is null, then an empty string is returned.  Otherwise, the value is rounded to options.decimalPlaces
+and returned in string form.
+*/
+_createValueString: function (value) {
+    if (!value) return "";
+    if (this.options.decimalPlaces < 0) return value.toString();
+
+    var fValue = parseFloat(value, 10);
+    return fValue.toFixed(this.options.decimalPlaces);
 }
 
 });
@@ -236,7 +308,20 @@ displayValue: function(value) {
 //
 if(ko && ko.bindingHandlers) {
 	ko.bindingHandlers.sevenSeg = {
-		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+	    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+	        var bindingValue = valueAccessor();
+	        $(element).sevenSeg(ko.toJS(bindingValue));
+
+	        // Setup event handler to mutate value observable whenever sevenSeg's value changes.
+            // 
+	        if (ko.isWriteableObservable(bindingValue.value)) {
+	            $(element).on("sevensegchange", function (event, value) {
+	                bindingValue.value(value);
+	            });
+	        }
+	    },
+
+	    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 			$(element).sevenSeg(ko.toJS(valueAccessor()));
 		}
 	};

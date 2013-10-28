@@ -1,7 +1,8 @@
 $(function () {
     var viewModel = {
         mainExampleValue: ko.observable(-5.234),
-        testValue1: ko.observable(-12.4)
+        testValue1: ko.observable(-12.4),
+        testValue2: ko.observable(9876)
     };
     ko.applyBindings(viewModel);
 
@@ -42,5 +43,5 @@ $(function () {
         $("#testArray2").sevenSeg("destroy");
     });
 
-    prettyPrint();
+    window.prettyPrint && prettyPrint();
 });
