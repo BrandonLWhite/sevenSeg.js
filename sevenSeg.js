@@ -189,8 +189,8 @@ options: {
     as-is.  A value of 0 or more defines the number of fixed decimal places that the numeric value will be rounded to.
     
     If you intend to set display values that are the result of floating point operations, including the
-    use of allowInput=true and a fractional step size, then you most definitely want to set this to a specific value due
-    to floating point inaccuracies.
+    use of allowInput=true and a fractional step size, then you most definitely want to set this to a specific value to
+    avoid overflowing the display from floating point inaccuracies.
     */
     decimalPlaces: -1
 },		

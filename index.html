@@ -220,6 +220,29 @@ options: {
     value: null,
 
     /**
+    Set this to true to allow sevenSeg to respond to the mousewheel event, which
+    will allow you to change the display value by spinning the mousewheel up or down.
+    (The default step is +/- 1, but you can set that in the 'step' option).
+    */
+    allowInput: false,
+
+    /**
+    This setting controls the +/- delta value whenever the sevenSeg is incremented up or down (via mousewheel).
+    The allowInput option must be true for this setting to be of use.
+    */
+    step: 1,
+
+    /**
+    This controls the number of decimal places displayed.  The default -1 results in no rounding and displays the value
+    as-is.  A value of 0 or more defines the number of fixed decimal places that the numeric value will be rounded to.
+    
+    If you intend to set display values that are the result of floating point operations, including the
+    use of allowInput=true and a fractional step size, then you most definitely want to set this to a specific value to
+    avoid overflowing the display from floating point inaccuracies.
+    */
+    decimalPlaces: -1,
+
+    /**
     Override the default segment "on" color (Red).  
     Note: You can alternatively define a CSS style for the class.sevenSeg-segOn that specifies a 'fill' color.
     */
@@ -306,16 +329,29 @@ options: {
     <pre class="prettyprint">&lt;div data-bind=&quot;sevenSeg: {digits: 5, value: testValue1}&quot;&gt;&lt;/div&gt;</pre>
 
     <h2>Mousewheel Input and 2-way Databinding</h2>
-    <p>TODO</p>
+    <p>
+        You can configure <code>sevenSeg</code> to also allow user input by setting the <code>allowInput</code> option. 
+        This will cause <code>sevenSeg</code> to respond to mousewheel events in order to step the numeric value up and down.
+        Additionally, you can set <code>step</code> and <code>decimalPlaces</code> if needed to achieve the desired
+        numeric step size and rounding, respectively.
+        <br />When used with a Knockout, this results in a two-way databinding that will update your observable with the
+        new value.
+    </p>
+    <p>
+        Go ahead and give the mousewheel a try on the <code>sevenSeg</code> below! 
+        Move the mouse pointer over the display, then spin the wheel up or down.  The value will increment
+        or decrement by 0.1 depending upon the direction you move the wheel.  Notice that the two-way databinding keeps the
+        observable (and thus the edit box) in sync. You can still edit the value in the edit box too.
+    </p>
 
     <div>
 	    <div class="exampleContainer exampleInput">
 		    <div data-bind="sevenSeg: { digits: 5, value: testValue2, allowInput: true, step: 0.1, decimalPlaces: 1 }" class="med-sevenSegArray5"></div>
 	    </div>
-	    <input data-bind="value: testValue2, valueUpdate: 'afterkeydown'" style="width: 10em;" />
+	    <input data-bind="value: testValue2, valueUpdate: 'afterkeydown'" style="width: 12em;" />
     </div>
 
-    <pre class="prettyprint">TODO</pre>
+    <pre class="prettyprint">&lt;div data-bind=&quot;sevenSeg: { digits: 5, value: testValue2, allowInput: true, step: 0.1, decimalPlaces: 1 }&quot;&gt;&lt;/div&gt;</pre>
 
     <h2>Inside of a jQueryUI resizable</h2>
     <p>
