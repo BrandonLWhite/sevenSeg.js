@@ -62,7 +62,8 @@ _create: function () {
         viewBox: "0 0 57 80",
         version: "1.1", 
         xmlns: "http://www.w3.org/2000/svg", 
-        "xmlns:xlink":"http://www.w3.org/1999/xlink"
+        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+        focusable: false // Prevent IE11 from creating a tabstop (Issue #8)
     })
     .css({fill: this.options.colorOff, "background-color": this.options.colorBackground})    ;
 
