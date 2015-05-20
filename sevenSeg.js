@@ -1,4 +1,4 @@
-﻿(function($) {
+﻿(function(global, $) {
 
 var c_aNumberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http://en.wikipedia.org/wiki/Seven-segment_display
 var c_sClassSvg = "sevenSeg-svg";
@@ -307,7 +307,7 @@ _createValueString: function (value) {
 
 // Plugin the Knockout binding handler for sevenSeg if KO is defined.
 //
-if(ko && ko.bindingHandlers) {
+if(global.ko && ko.bindingHandlers) {
 	ko.bindingHandlers.sevenSeg = {
 	    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 	        var bindingValue = valueAccessor();
@@ -328,4 +328,4 @@ if(ko && ko.bindingHandlers) {
 	};
 }
 
-})(jQuery);
+})(this, jQuery);
