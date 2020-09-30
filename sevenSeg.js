@@ -136,11 +136,26 @@ displayValue: function(value, bDecimalPoint) {
     if(!c_aNumberSegments.hasOwnProperty(value)) return;
     self.options.value = value;
     var segments = self._getSegments(value);
-    self.jqSegments.children().each(function(index, element) {                     
-        self._setSvgElementFill($(element), segments & (1 << index));        
+    self.jqSegments.children().each(function(index, element) {
+        self._setSvgElementFill($(element), segments & (1 << index));
     });
     
     self._setSvgElementFill(self.jqSvgElement.find("circle"), bDecimalPoint);
+},
+
+/**
+  This is the method to set the segments displayed without any decoding applied.
+  This may be useful for graphical or other non-text applications.
+  @param value The raw value to display. Should be an 8 bit value with segment A in LSB and decimal pont in MSB.
+  */
+ displayRaw: function(value){
+    var self = this;
+    self.options.value = value;
+    var segments = value;
+    self.jqSegments.children().each(function(index, element) {
+      self._setSvgElementFill($(element), segments & (1 << index));
+    });
+    self._setSvgElementFill(self.jqSvgElement.find("circle"), segments & (1 << 7));
 },
 
 /**
